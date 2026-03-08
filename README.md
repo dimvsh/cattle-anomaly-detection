@@ -2,6 +2,23 @@
 
 An ML-based early warning system for detecting health anomalies in feedlot cattle through automated analysis of RFID-monitored drinking behavior. Developed as a bachelor thesis project using data from the COWMAS Precision Livestock Farming (PLF) system.
 
+## Quick Start
+
+**Interactive Dashboard:** [Open Streamlit App](https://dimvsh-cattle-anomaly-detection.streamlit.app) *(link will be active after Streamlit Cloud deployment)*
+
+**Run Notebooks in Browser (no installation needed):**
+
+| # | Notebook | Open in Colab |
+|---|----------|:---:|
+| 1 | Data Import and SQL Preprocessing | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/01_data_import_and_sql.ipynb) |
+| 2 | Feature Engineering | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/02_feature_engineering.ipynb) |
+| 3 | Exploratory Data Analysis | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/03_eda_visualization.ipynb) |
+| 4 | Anomaly Detection Models | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/04_anomaly_detection.ipynb) |
+| 5 | Validation and Results | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/05_validation_results.ipynb) |
+| 6 | System Demo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/06_system_demo.ipynb) |
+
+> To run a notebook in Colab: click the badge, then **Runtime > Run all**. The first cell automatically clones the repo and installs dependencies.
+
 ## System Architecture
 
 ```
@@ -29,7 +46,7 @@ Raw Scanner Data (CSV)
 | `avg_visit_duration` | Mean duration of a single bout (seconds) |
 | `max_absence_hours` | Longest gap between consecutive bouts (hours) |
 
-## Installation
+## Local Installation
 
 ```bash
 pip install -r requirements.txt
@@ -75,9 +92,7 @@ flagged = results[results['ae_anomaly'] == 1]
 ## Project Structure
 
 ```
-project/
 ├── src/                      # System source code
-│   ├── __init__.py
 │   ├── preprocessing.py      # Raw data cleaning
 │   ├── features.py           # Bout merging + daily features
 │   ├── detector.py           # Trained model loading + scoring
@@ -86,21 +101,14 @@ project/
 │   ├── autoencoder.keras     # TensorFlow autoencoder (4-3-2-3-4)
 │   ├── scaler.pkl            # StandardScaler (fit on healthy data)
 │   └── config.json           # Threshold and parameters
-├── notebooks/                # Research & development notebooks
-│   ├── 01_data_import_and_sql.ipynb
-│   ├── 02_feature_engineering.ipynb
-│   ├── 03_eda_visualization.ipynb
-│   ├── 04_anomaly_detection.ipynb
-│   ├── 05_validation_results.ipynb
-│   └── 06_system_demo.ipynb
+├── notebooks/                # Research & development notebooks (01-06)
 ├── data/
 │   ├── raw/                  # Original data files
 │   └── processed/            # Cleaned CSVs
 ├── figures/                  # Thesis-ready figures (fig1-fig17)
 ├── app.py                    # Streamlit dashboard
 ├── detect.py                 # CLI entry point
-├── requirements.txt
-└── README.md
+└── requirements.txt
 ```
 
 ## Model Details
