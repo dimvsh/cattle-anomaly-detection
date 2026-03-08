@@ -2,80 +2,22 @@
 
 An ML-based early warning system for detecting health anomalies in feedlot cattle through automated analysis of RFID-monitored drinking behavior. Developed as a bachelor thesis project using data from the COWMAS Precision Livestock Farming (PLF) system.
 
----
+## Quick Start
 
-## How to Use This Repository
+**Interactive Dashboard:** [Open Streamlit App](https://dimvsh-cattle-anomaly-detection.streamlit.app) *(link will be active after Streamlit Cloud deployment)*
 
-Everything runs in your browser. **No software installation is needed.**
+**Run Notebooks in Browser (no installation needed):**
 
-### 1. Browse the Code and Data
+| # | Notebook | Open in Colab |
+|---|----------|:---:|
+| 1 | Data Import and SQL Preprocessing | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/01_data_import_and_sql.ipynb) |
+| 2 | Feature Engineering | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/02_feature_engineering.ipynb) |
+| 3 | Exploratory Data Analysis | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/03_eda_visualization.ipynb) |
+| 4 | Anomaly Detection Models | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/04_anomaly_detection.ipynb) |
+| 5 | Validation and Results | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/05_validation_results.ipynb) |
+| 6 | System Demo | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/06_system_demo.ipynb) |
 
-You are already on the right page. Click on any folder or file above to view it. Key locations:
-
-- **`notebooks/`** — the 6 Jupyter notebooks with all analysis, code, and results
-- **`src/`** — the Python source code for the detection system
-- **`data/`** — raw and processed datasets
-- **`models/`** — the trained machine learning model
-- **`figures/`** — all 17 thesis figures (click any `.png` file to view it)
-- **`app.py`** — the interactive dashboard code
-
-### 2. Interactive Dashboard
-
-Click the link below to open the live dashboard in your browser:
-
-**[Open Dashboard](https://cattle-anomaly-detection-nzucgteqcdkeytsvlzafnp.streamlit.app)**
-
-The dashboard lets you explore anomaly detection results, view per-animal behavioral timelines, and see which animals were flagged.
-
-### 3. Run the Notebooks
-
-The notebooks contain the full research pipeline — from raw data import to final results. You can view them directly on GitHub (just click the file), or run them interactively using Google Colab:
-
-| # | Notebook | What it does | Run it |
-|---|----------|-------------|:---:|
-| 1 | Data Import and SQL | Loads raw RFID scanner data from the database | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/01_data_import_and_sql.ipynb) |
-| 2 | Feature Engineering | Computes 4 daily behavioral metrics per animal | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/02_feature_engineering.ipynb) |
-| 3 | Exploratory Data Analysis | Visualizations and statistical analysis (Fig 1-7) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/03_eda_visualization.ipynb) |
-| 4 | Anomaly Detection | Trains the autoencoder and isolation forest models (Fig 8-12) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/04_anomaly_detection.ipynb) |
-| 5 | Validation and Results | Model evaluation, metrics, and discussion (Fig 13-17) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/05_validation_results.ipynb) |
-| 6 | System Demo | Exports the model and demonstrates the full pipeline | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dimvsh/cattle-anomaly-detection/blob/main/notebooks/06_system_demo.ipynb) |
-
-**To run a notebook in Colab:**
-1. Click the "Open in Colab" button next to the notebook
-2. Sign in with a Google account if prompted
-3. Click **Runtime** (top menu) then **Run all**
-4. Wait for all cells to finish (a few minutes). You will see all outputs, tables, and figures generated live.
-
----
-
-## Project Structure
-
-```
-├── notebooks/                # Research notebooks (01-06)
-│   ├── 01_data_import_and_sql.ipynb
-│   ├── 02_feature_engineering.ipynb
-│   ├── 03_eda_visualization.ipynb
-│   ├── 04_anomaly_detection.ipynb
-│   ├── 05_validation_results.ipynb
-│   └── 06_system_demo.ipynb
-├── src/                      # Detection system source code
-│   ├── preprocessing.py      # Raw data cleaning
-│   ├── features.py           # Bout merging + daily metric computation
-│   ├── detector.py           # Trained model loading + anomaly scoring
-│   └── pipeline.py           # End-to-end pipeline
-├── models/                   # Trained model artifacts
-│   ├── autoencoder.keras     # TensorFlow autoencoder (4-3-2-3-4)
-│   ├── scaler.pkl            # StandardScaler (fit on healthy training data)
-│   ├── weights.json          # Extracted model weights for deployment
-│   └── config.json           # Threshold and pipeline parameters
-├── data/
-│   ├── raw/                  # Original data (SQL dump, animal roster)
-│   └── processed/            # Cleaned CSVs used by notebooks
-├── figures/                  # All 17 thesis figures (fig1–fig17)
-├── app.py                    # Streamlit interactive dashboard
-├── detect.py                 # Command-line detection tool
-└── requirements.txt          # Python dependencies
-```
+> To run a notebook in Colab: click the badge, then **Runtime > Run all**. The first cell automatically clones the repo and installs dependencies.
 
 ## System Architecture
 
@@ -103,6 +45,71 @@ Raw Scanner Data (CSV)
 | `visit_count` | Number of drinking bouts per day |
 | `avg_visit_duration` | Mean duration of a single bout (seconds) |
 | `max_absence_hours` | Longest gap between consecutive bouts (hours) |
+
+## Local Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Requirements: Python 3.10+, TensorFlow, scikit-learn, pandas, numpy, matplotlib, streamlit, joblib.
+
+## Usage
+
+### 1. Command-Line Interface
+
+```bash
+# Basic usage
+python detect.py --input data/processed/scanner_data_clean.csv
+
+# Save results to file
+python detect.py --input data/processed/scanner_data_clean.csv --output results.csv
+```
+
+### 2. Web Dashboard
+
+```bash
+streamlit run app.py
+```
+
+The dashboard provides:
+- Herd overview with anomaly counts
+- Alert list ranking animals by anomaly frequency
+- Per-animal detail with behavioral timelines and anomaly score plots
+- Interactive data exploration
+
+### 3. Python API
+
+```python
+from src.pipeline import run_pipeline
+
+results, summary = run_pipeline('scanner_data.csv', model_dir='models/')
+
+# results is a DataFrame with ae_score and ae_anomaly columns
+flagged = results[results['ae_anomaly'] == 1]
+```
+
+## Project Structure
+
+```
+├── src/                      # System source code
+│   ├── preprocessing.py      # Raw data cleaning
+│   ├── features.py           # Bout merging + daily features
+│   ├── detector.py           # Trained model loading + scoring
+│   └── pipeline.py           # End-to-end pipeline
+├── models/                   # Trained model artifacts
+│   ├── autoencoder.keras     # TensorFlow autoencoder (4-3-2-3-4)
+│   ├── scaler.pkl            # StandardScaler (fit on healthy data)
+│   └── config.json           # Threshold and parameters
+├── notebooks/                # Research & development notebooks (01-06)
+├── data/
+│   ├── raw/                  # Original data files
+│   └── processed/            # Cleaned CSVs
+├── figures/                  # Thesis-ready figures (fig1-fig17)
+├── app.py                    # Streamlit dashboard
+├── detect.py                 # CLI entry point
+└── requirements.txt
+```
 
 ## Model Details
 
