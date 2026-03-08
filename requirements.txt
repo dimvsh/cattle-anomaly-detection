@@ -3,7 +3,7 @@ numpy
 matplotlib
 seaborn
 scikit-learn
-tensorflow-cpu
+tensorflow
 openpyxl
 joblib
 streamlit
