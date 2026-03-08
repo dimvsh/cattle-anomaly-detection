@@ -1,7 +1,7 @@
 """
 Anomaly detection module: load trained model and score daily features.
 
-Uses a pre-trained TensorFlow autoencoder and StandardScaler to compute
+Uses pre-extracted autoencoder weights (numpy) and StandardScaler to compute
 reconstruction error (MSE) for each animal-day. Days with error above
 the threshold are flagged as anomalies.
 """
@@ -13,11 +13,26 @@ import pandas as pd
 import joblib
 
 
+def _relu(x):
+    return np.maximum(0, x)
+
+
+def _forward(x, weights):
+    """Run autoencoder forward pass using extracted weights."""
+    # Encoder
+    h = _relu(x @ np.array(weights['encoder_layer0']['weights']) + np.array(weights['encoder_layer0']['bias']))
+    h = _relu(h @ np.array(weights['encoder_layer1']['weights']) + np.array(weights['encoder_layer1']['bias']))
+    # Decoder
+    h = _relu(h @ np.array(weights['decoder_layer0']['weights']) + np.array(weights['decoder_layer0']['bias']))
+    h = h @ np.array(weights['decoder_layer1']['weights']) + np.array(weights['decoder_layer1']['bias'])
+    return h
+
+
 class AnomalyDetector:
     """Loads a trained autoencoder model and scores new data for anomalies."""
 
     def __init__(self):
-        self.autoencoder = None
+        self.weights = None
         self.scaler = None
         self.config = None
 
@@ -28,21 +43,19 @@ class AnomalyDetector:
         Parameters
         ----------
         model_dir : str
-            Path to directory containing autoencoder.keras, scaler.pkl, config.json.
+            Path to directory containing weights.json, scaler.pkl, config.json.
         """
-        os.environ['CUDA_VISIBLE_DEVICES'] = ''
-        os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-        import tensorflow as tf
-
         config_path = os.path.join(model_dir, 'config.json')
         scaler_path = os.path.join(model_dir, 'scaler.pkl')
-        model_path = os.path.join(model_dir, 'autoencoder.keras')
+        weights_path = os.path.join(model_dir, 'weights.json')
 
         with open(config_path, 'r') as f:
             self.config = json.load(f)
 
         self.scaler = joblib.load(scaler_path)
-        self.autoencoder = tf.keras.models.load_model(model_path, compile=False)
+
+        with open(weights_path, 'r') as f:
+            self.weights = json.load(f)
 
     def score(self, daily_features):
         """
@@ -69,7 +82,7 @@ class AnomalyDetector:
             df['max_absence_hours'] = df['max_absence_hours'].fillna(median_val)
 
         X = self.scaler.transform(df[feature_cols])
-        X_reconstructed = self.autoencoder(X, training=False).numpy()
+        X_reconstructed = _forward(X, self.weights)
         mse = np.mean((X - X_reconstructed) ** 2, axis=1)
 
         df['ae_score'] = mse
