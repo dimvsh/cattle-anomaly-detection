@@ -1,0 +1,15 @@
+{
+  "feature_cols": [
+    "total_daily_duration",
+    "visit_count",
+    "avg_visit_duration",
+    "max_absence_hours"
+  ],
+  "threshold": 2.3213777796927264,
+  "bout_gap_threshold": 60,
+  "max_duration_sec": 1800,
+  "architecture": "4-3-2-3-4",
+  "training_samples": 492,
+  "training_period": "2024-10-11 to 2024-10-29",
+  "threshold_percentile": 95
+}
